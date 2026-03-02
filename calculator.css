@@ -12,7 +12,7 @@
     font-family: Arial, Helvetica, sans-serif;
     cursor: pointer;
     user-select: none;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.2s;
 }
 
 .my-btn:hover {
@@ -55,29 +55,10 @@
     align-items: center;
 }
 
-.buttons-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
 .row {
     display: flex;
     gap: 5px;
     justify-content: center;
-}
-
-.my-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    color: #01064a !important;
-}
-
-.my-btn.execute {
-    width: 105px;
-    border-radius: 34px;
 }
 
 .result {
