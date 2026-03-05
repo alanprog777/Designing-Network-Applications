@@ -35,11 +35,6 @@
     display: block;
 }
 
-.logo a {
-    display: block;
-    line-height: 0;
-}
-
 .menu {
     display: flex;
     flex-grow: 1;
@@ -134,7 +129,7 @@
     margin-top: 10px;
 }
 
-.photo-side img {
+.photo img {
     width: 550px;
     height: 450px;
     object-fit: cover;
@@ -177,11 +172,9 @@
 .adress {
     color: #0d0f10;
     font-size: 16px;
-    opacity: 0.8;
     text-align: center;
     margin-top: 20px;
 }
-
 
 .my-btn {
     margin-right: 5px;
