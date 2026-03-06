@@ -162,6 +162,7 @@
     color: #43484d;
     font-size: 15px;
     text-decoration: underline;
+    cursor: not-allowed;
 }
 
 .separator {
@@ -221,10 +222,9 @@
 }
 
 .calculator-background {
-    width: 250px;
     height: auto;
     background-color: #1da2bd;
-    padding: 15px;
+    padding: 30px 20px 30px 20px;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -272,8 +272,18 @@
     margin-bottom: 20px;
 }
 
+.author-head-text {
+    color: #000000;
+}
+
 .author-text {
-    line-height: 1.6;
-    font-size: 18px;
-    margin-bottom: 400px;
+    font-size: 30px;
+    color: #000000;
+}
+
+.author-info {
+    font-size: 20px;
+    cursor: pointer;
+    padding-bottom: 400px;
+
 }
