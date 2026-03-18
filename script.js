@@ -7,19 +7,48 @@ window.onload = function() {
     const outputElement = document.getElementById("result")
     const digitButtons = document.querySelectorAll('[id ^= "btn_digit_"]')
 
-    function onDigitButtonClicked(digit) {
-        if(!selectedOperation) {
-            if ((digit != '.') || (digit == '.' && !a.includes(digit))) {
-                a += digit;
+function onDigitButtonClicked(digit) {
+    if (!selectedOperation) {
+        if (a === "Infinity" || a === "-Infinity" || a === "NaN") {
+            if (digit === '.') {
+                a = "0.";
+            } else {
+                a = digit;
             }
-            outputElement.innerHTML = a;
+        }
+        else if (a === '' && digit === '.') {
+            a = "0.";
         }
         else {
-            if ((digit != '.') || (digit == '.' && !b.includes(digit)))
-                b+= digit;
-            outputElement.innerHTML = b;
+            if (a.length >= 8 && digit !== '.') return;
+
+            if (digit !== '.' || !a.includes('.')) {
+                a += digit;
+            }
         }
+        outputElement.innerHTML = a;
     }
+    else {
+        if (b === "Infinity" || b === "-Infinity" || b === "NaN") {
+            if (digit === '.') {
+                b = "0.";
+            } else {
+                b = digit;
+            }
+        }
+        else if (b === '' && digit === '.') {
+            b = "0.";
+        }
+        else {
+            if (b.length >= 8 && digit !== '.') return;
+
+            if (digit !== '.' || !b.includes('.')) {
+                b += digit;
+            }
+        }
+        outputElement.innerHTML = b;
+    }
+}
 
 digitButtons.forEach(button =>{
     button.onclick = function() {
@@ -71,28 +100,32 @@ document.getElementById("btn_op_sign").onclick = function() {
 }
 
 document.getElementById("btn_op_equal").onclick = function() {
-    if (a === '' || b === '' || !selectedOperation)
-        return
+    if (a === '' || b === '' || !selectedOperation) return;
 
+    let res = 0;
     switch(selectedOperation) {
-        case 'x':
-            expressionResult = (+a) * (+b)
-            break;
-        case '+':
-            expressionResult = (+a) + (+b)
-            break;
-        case '-':
-            expressionResult = (+a) - (+b)
-            break;
-        case '/':
-            expressionResult = (+a) / (+b)
-            break;
+        case 'x': res = (+a) * (+b); break;
+        case '+': res = (+a) + (+b); break;
+        case '-': res = (+a) - (+b); break;
+        case '/': res = (+a) / (+b); break;
     }
 
-    a = expressionResult.toString()
-    b = ''
-    selectedOperation = null
+    let finalResult = res.toString();
+    if (finalResult.length > 8) {
+        finalResult = res.toPrecision(7).toString();
 
-    outputElement.innerHTML = a
+        if (finalResult.includes('.')) {
+            finalResult = parseFloat(finalResult).toString();
+        }
+
+        if (finalResult.length > 8) {
+            finalResult = finalResult.substring(0, 8);
+        }
+    }
+
+    a = finalResult;
+    b = '';
+    selectedOperation = null;
+    outputElement.innerHTML = a;
 }
 };
