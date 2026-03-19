@@ -9,43 +9,100 @@ window.onload = function() {
 
 function onDigitButtonClicked(digit) {
     if (!selectedOperation) {
+        if (a.includes('e')) return;
+
         if (a === "Infinity" || a === "-Infinity" || a === "NaN") {
             if (digit === '.') {
                 a = "0.";
             } else {
                 a = digit;
             }
+            outputElement.innerHTML = a;
+            return;
         }
-        else if (a === '' && digit === '.') {
-            a = "0.";
-        }
-        else {
-            if (a.length >= 8 && digit !== '.') return;
 
-            if (digit !== '.' || !a.includes('.')) {
-                a += digit;
+        if (a === '' && digit === '.') {
+            a = "0.";
+            outputElement.innerHTML = a;
+            return;
+        }
+
+        let currentDigits = a.length;
+
+        if (digit !== '.') {
+            if (currentDigits >= 8) {
+                if (a !== '' && a !== '-') {
+                    const num = parseFloat(a);
+                    a = num.toExponential(2);
+                }
+                outputElement.innerHTML = a;
+                return;
+            }
+
+            a += digit;
+
+            let newDigits = a.length;
+            if (newDigits > 8) {
+                const num = parseFloat(a);
+                a = num.toExponential(2);
+            }
+        } else {
+            if (!a.includes('.')) {
+                if (a === '' || a === '-') {
+                    a += '0.';
+                } else {
+                    a += '.';
+                }
             }
         }
+
         outputElement.innerHTML = a;
-    }
-    else {
+    } else {
         if (b === "Infinity" || b === "-Infinity" || b === "NaN") {
             if (digit === '.') {
                 b = "0.";
             } else {
                 b = digit;
             }
+            outputElement.innerHTML = b;
+            return;
         }
-        else if (b === '' && digit === '.') {
-            b = "0.";
-        }
-        else {
-            if (b.length >= 8 && digit !== '.') return;
 
-            if (digit !== '.' || !b.includes('.')) {
-                b += digit;
+        if (b === '' && digit === '.') {
+            b = "0.";
+            outputElement.innerHTML = b;
+            return;
+        }
+
+        let currentDigits = b.length;
+
+        if (digit !== '.') {
+            if (currentDigits >= 8) {
+                if (b !== '' && b !== '-') {
+                    const num = parseFloat(b);
+                    b = num.toExponential(2);
+                }
+                outputElement.innerHTML = b;
+                return;
+            }
+
+            b += digit;
+
+            let newDigits = b.length;
+            if (newDigits > 8) {
+                const num = parseFloat(b);
+                b = num.toExponential(2);
+            }
+        } else {
+            if (!b.includes('.')) {
+                if (b === '' || b === '-') {
+                    b += '0.';
+                } else {
+                    b += '.';
+                }
             }
         }
+
         outputElement.innerHTML = b;
     }
 }
