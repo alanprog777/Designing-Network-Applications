@@ -1,0 +1,31 @@
+export const ProductPage = () => {
+    const params = new URLSearchParams(window.location.hash.split('?')[1]);
+    const id = params.get('id');
+
+    const descriptions = {
+        "1": "Этот чат предназначен для прямой связи с дежурным инженером Costext. Время ответа составляет не более 5 минут. Все сообщения логируются для безопасности.",
+        "2": "Анонимный шлюз. Ваши данные не сохраняются на сервере после закрытия сессии. Идеально для разовых конфиденциальных запросов.",
+        "3": "Приоритетный канал для корпоративных клиентов. Позволяет отправлять сообщения сразу всей группе менеджеров вашего проекта.",
+        "4": "Общий чат для информационных рассылок. Здесь вы можете увидеть статус системы и последние обновления сервиса в реальном времени."
+    };
+
+    const text = descriptions[id] || "Это клонированная услуга. Она полностью наследует параметры родительского чата, но создана для новой независимой заявки.";
+
+    const page = document.createElement('div');
+    page.style.maxWidth = '600px';
+    page.style.background = 'white';
+    page.style.padding = '40px';
+    page.style.borderRadius = '12px';
+    page.style.border = '2px solid #1da2bd';
+    page.style.marginTop = '20px';
+
+    page.innerHTML = `
+        <h2 style="color: #1da2bd; margin-top: 0;">Детали чата #${id}</h2>
+        <p style="font-size: 18px; line-height: 1.6; color: #333;">${text}</p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+        <p><strong>Тип заявки:</strong> Отправка мгновенного сообщения</p>
+        <button class="btn-detail" onclick="window.location.hash = 'main'" style="width: 100%; margin-top: 10px;">Назад к списку чатов</button>
+    `;
+
+    return page;
+};

@@ -1,33 +1,47 @@
-export class ProductCardComponent {
-    constructor(parent) {
-        this.parent = parent;
-    }
+import { ProductCard } from '../../components/product-card/index.js';
 
-    getHTML(data) {
-        return `
-            <div class="card" style="width: 18rem; border-radius: 12px; overflow: hidden; background: white; border: 1px solid #e8e9ed;">
-                <img src="${data.src}" class="card-img-top" alt="${data.title}" style="height: 160px; object-fit: cover;">
-                <div class="card-body" style="text-align: center; padding: 20px;">
-                    <h5 class="card-title" style="color: #2c3e50; font-weight: bold;">${data.title}</h5>
-                    <p class="card-text" style="color: #666; font-size: 14px;">${data.text}</p>
-                    <button id="click-card-${data.id}" class="btn btn-primary w-100" style="background-color: #1da2bd; border: none; font-weight: bold;">
-                        Перейти
-                    </button>
-                </div>
-            </div>
-        `;
-    }
+let chatsData = [
+    { id: 1, name: "Чат техподдержки", service: "Чаты", messagePreview: "Отправка сообщения админу..." },
+    { id: 2, name: "Анонимный отдел", service: "Чаты", messagePreview: "Запрос на скрытую связь..." },
+    { id: 3, name: "Бизнес консультант", service: "Чаты", messagePreview: "Сообщение по тарифу..." },
+    { id: 4, name: "Общий канал связи", service: "Чаты", messagePreview: "Публичное уведомление..." }
+];
 
-    addListeners(data, listener) {
-        const button = document.getElementById(`click-card-${data.id}`);
-        if (button) {
-            button.addEventListener("click", listener);
-        }
-    }
+export const MainPage = () => {
+    const container = document.createElement('div');
+    container.style.width = '100%';
+    container.style.textAlign = 'center';
 
-    render(data, listener) {
-        const html = this.getHTML(data);
-        this.parent.insertAdjacentHTML('beforeend', html);
-        this.addListeners(data, listener);
-    }
-}
+    container.innerHTML = `
+        <h2>Наши услуги: Чаты</h2>
+        <input type="text" class="search-input" id="filter" placeholder="Поиск по названию чата...">
+        <div class="cards-wrapper" id="grid"></div>
+    `;
+
+    const render = (items) => {
+        const grid = container.querySelector('#grid');
+        grid.innerHTML = '';
+        items.forEach(item => {
+            grid.appendChild(ProductCard(
+                item,
+                (target) => {
+                    const clone = { ...target, id: Date.now(), name: target.name + " (Копия)" };
+                    chatsData.push(clone);
+                    render(chatsData);
+                },
+                (id) => {
+                    chatsData = chatsData.filter(c => c.id !== id);
+                    render(chatsData);
+                }
+            ));
+        });
+    };
+
+    container.querySelector('#filter').oninput = (e) => {
+        const val = e.target.value.toLowerCase();
+        render(chatsData.filter(c => c.name.toLowerCase().includes(val)));
+    };
+
+    render(chatsData);
+    return container;
+};

@@ -1,23 +1,10 @@
 {
-  "name": "designing-network-applications",
+  "name": "costext-chats",
   "version": "1.0.0",
-  "description": "Лабораторная работа 2: Calculator. JavaScript Цель данной лабораторной работы - знакомство с инструментами построения пользовательских интерфейсов web-сайтов: HTML, CSS, JavaScript. В ходе выполнения работы, вам предстоит продолжить реализовывать простой калькулятор, и затем выполнить задания по варианту. План: 1. Программирование логики с помощью JavaScript 2. Доступ к HTML-элементам из JavaScript 3. Программирование кнопок калькулятора 4. Запуск калькулятора с помощью LiveServer 5. Задание Тема: Чаты. Услуги - чаты, заявки - отправка сообщения Сайт, с которого был взят дизайн: https://www.costext.com/ Задания, для самостоятельной отработки:",
-  "homepage": "https://github.com/alanprog777/Designing-Network-Applications#readme",
-  "bugs": {
-    "url": "https://github.com/alanprog777/Designing-Network-Applications/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alanprog777/Designing-Network-Applications.git"
-  },
-  "license": "ISC",
-  "author": "",
-  "type": "commonjs",
+  "description": "Educational project for chats management",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npx serve ."
   },
-  "dependencies": {
-    "bootstrap": "^5.3.8"
-  }
+  "type": "module"
 }
