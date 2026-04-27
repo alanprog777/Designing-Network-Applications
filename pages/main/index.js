@@ -1,10 +1,10 @@
 import { ProductCard } from '../../components/product-card/index.js';
 
-let chatsData = [
-    { id: 1, name: "Чат техподдержки", service: "Чаты", messagePreview: "Отправка сообщения админу..." },
-    { id: 2, name: "Анонимный отдел", service: "Чаты", messagePreview: "Запрос на скрытую связь..." },
-    { id: 3, name: "Бизнес консультант", service: "Чаты", messagePreview: "Сообщение по тарифу..." },
-    { id: 4, name: "Общий канал связи", service: "Чаты", messagePreview: "Публичное уведомление..." }
+const chatsData = [
+    { id: 1, name: "Чат техподдержки", service: "Чаты", messagePreview: "Отправка сообщения админу...", originalName: "Чат техподдержки" },
+    { id: 2, name: "Анонимный отдел", service: "Чаты", messagePreview: "Запрос на скрытую связь...", originalName: "Анонимный отдел" },
+    { id: 3, name: "Бизнес консультант", service: "Чаты", messagePreview: "Сообщение по тарифу...", originalName: "Бизнес консультант" },
+    { id: 4, name: "Общий канал связи", service: "Чаты", messagePreview: "Публичное уведомление...", originalName: "Общий канал связи" }
 ];
 
 export const MainPage = () => {
@@ -18,30 +18,44 @@ export const MainPage = () => {
         <div class="cards-wrapper" id="grid"></div>
     `;
 
-    const render = (items) => {
+    const render = (filterVal = '') => {
         const grid = container.querySelector('#grid');
         grid.innerHTML = '';
-        items.forEach(item => {
+
+        const filteredItems = chatsData.filter(c =>
+            c.name.toLowerCase().includes(filterVal.toLowerCase())
+        );
+
+        filteredItems.forEach(item => {
             grid.appendChild(ProductCard(
                 item,
                 (target) => {
-                    const clone = { ...target, id: Date.now(), name: target.name + " (Копия)" };
-                    chatsData.push(clone);
-                    render(chatsData);
+                    const original = target.originalName || target.name;
+                    const copyNum = chatsData.filter(c => c.originalName === original).length;
+
+                    chatsData.push({
+                        ...target,
+                        id: Date.now(),
+                        name: original,
+                        originalName: original,
+                        isCopy: true,
+                        copyNum: copyNum
+                    });
+                    render(container.querySelector('#filter').value);
                 },
                 (id) => {
-                    chatsData = chatsData.filter(c => c.id !== id);
-                    render(chatsData);
+                    const index = chatsData.findIndex(c => c.id === id);
+                    if (index !== -1) {
+                        chatsData.splice(index, 1);
+                    }
+                    render(container.querySelector('#filter').value);
                 }
             ));
         });
     };
 
-    container.querySelector('#filter').oninput = (e) => {
-        const val = e.target.value.toLowerCase();
-        render(chatsData.filter(c => c.name.toLowerCase().includes(val)));
-    };
+    container.querySelector('#filter').oninput = (e) => render(e.target.value);
 
-    render(chatsData);
+    render();
     return container;
 };

@@ -1,0 +1,10 @@
+.about-content {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.about-content p {
+    margin-bottom: 15px;
+}

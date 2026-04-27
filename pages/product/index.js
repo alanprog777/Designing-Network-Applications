@@ -12,20 +12,19 @@ export const ProductPage = () => {
     const text = descriptions[id] || "Это клонированная услуга. Она полностью наследует параметры родительского чата, но создана для новой независимой заявки.";
 
     const page = document.createElement('div');
-    page.style.maxWidth = '600px';
-    page.style.background = 'white';
-    page.style.padding = '40px';
-    page.style.borderRadius = '12px';
-    page.style.border = '2px solid #1da2bd';
-    page.style.marginTop = '20px';
+    page.className = 'product-details-card'; // Стиль из CSS
 
     page.innerHTML = `
-        <h2 style="color: #1da2bd; margin-top: 0;">Детали чата #${id}</h2>
-        <p style="font-size: 18px; line-height: 1.6; color: #333;">${text}</p>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+        <h2 class="product-title">Детали чата #${id || 'N/A'}</h2>
+        <p class="product-text">${text}</p>
+        <hr class="product-divider">
         <p><strong>Тип заявки:</strong> Отправка мгновенного сообщения</p>
-        <button class="btn-detail" onclick="window.location.hash = 'main'" style="width: 100%; margin-top: 10px;">Назад к списку чатов</button>
+        <button id="back-btn" class="btn-detail btn-full-width">Назад к списку чатов</button>
     `;
+
+    page.querySelector('#back-btn').onclick = () => {
+        window.location.hash = '#main';
+    };
 
     return page;
 };

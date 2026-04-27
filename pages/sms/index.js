@@ -1,8 +1,7 @@
 export const SmsPage = () => {
     const container = document.createElement('div');
-    container.style.display = 'flex';
-    container.style.alignItems = 'center';
-    container.style.gap = '100px';
+    container.className = 'sms-page-container'; 
+
     container.innerHTML = `
         <section class="sms-card">
             <h1 class="sms-title">Отправить анонимное СМС</h1>
@@ -20,7 +19,7 @@ export const SmsPage = () => {
             </div>
         </section>
         <aside class="photo">
-            <img src="img/android.jpg" alt="android" style="width: 600px; border-radius: 12px;">
+            <img src="img/android.jpg" alt="android" class="android-img">
         </aside>
     `;
     return container;
