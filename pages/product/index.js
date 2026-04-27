@@ -1,3 +1,5 @@
+import { initModelViewer } from '../../utils/model-viewer.js';
+
 export const ProductPage = () => {
     const params = new URLSearchParams(window.location.hash.split('?')[1]);
     const id = params.get('id');
@@ -12,15 +14,27 @@ export const ProductPage = () => {
     const text = descriptions[id] || "Это клонированная услуга. Она полностью наследует параметры родительского чата, но создана для новой независимой заявки.";
 
     const page = document.createElement('div');
-    page.className = 'product-details-card'; // Стиль из CSS
+    page.className = 'product-details-card';
 
     page.innerHTML = `
-        <h2 class="product-title">Детали чата #${id || 'N/A'}</h2>
-        <p class="product-text">${text}</p>
+        <h2 class="product-title">Детали услуги #${id}</h2>
+
+        <div id="model-container"></div>
+
+        <div class="controls-panel">
+            <button class="view-btn" onclick="setCameraView('front')">Спереди</button>
+            <button class="view-btn" onclick="setCameraView('side')">Сбоку</button>
+            <button class="view-btn" onclick="setCameraView('top')">Сверху</button>
+        </div>
+
+        <p class="product-text" style="margin-top: 20px;">${text}</p>
         <hr class="product-divider">
-        <p><strong>Тип заявки:</strong> Отправка мгновенного сообщения</p>
         <button id="back-btn" class="btn-detail btn-full-width">Назад к списку чатов</button>
     `;
+
+    setTimeout(() => {
+        initModelViewer('model-container', 'model/Phone.glb');
+    }, 0);
 
     page.querySelector('#back-btn').onclick = () => {
         window.location.hash = '#main';

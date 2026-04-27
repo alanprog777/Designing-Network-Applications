@@ -104,3 +104,36 @@ body {
     margin-top: 15px;
     color: #000;
 }
+
+/* Контейнер для 3D модели */
+#model-container {
+    width: 100%;
+    height: 400px;
+    background: #f0f0f0;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    cursor: grab;
+    overflow: hidden;
+}
+
+#model-container:active {
+    cursor: grabbing;
+}
+
+/* Кнопки управления ракурсом */
+.controls-panel {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.view-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    background: #1da2bd;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
