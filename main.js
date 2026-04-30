@@ -13,11 +13,9 @@ const router = () => {
 
     const hash = window.location.hash.split('?')[0] || '#main';
 
-    // Рендерим Header
     headerSlot.innerHTML = '';
     headerSlot.appendChild(Header(hash));
 
-    // Рендерим контент страницы
     app.innerHTML = '';
     if (hash === '#main') app.appendChild(MainPage());
     else if (hash === '#product') app.appendChild(ProductPage());
@@ -25,7 +23,6 @@ const router = () => {
     else if (hash === '#calc') app.appendChild(CalcPage());
     else if (hash === '#author') app.appendChild(AuthorPage());
 
-    // Рендерим Footer
     footerSlot.innerHTML = '';
     footerSlot.appendChild(Footer());
 };
