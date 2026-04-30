@@ -6,5 +6,7 @@ router.get('/', stocksController.getAllStocks);
 router.get('/:id', stocksController.getStockById);
 router.post('/', stocksController.createStock);
 router.delete('/:id', stocksController.deleteStock);
+router.patch('/:id', stocksController.updateStock);
+router.delete('/cleanup/unpopular', stocksController.deleteLowMembers);
 
 module.exports = router;

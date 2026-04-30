@@ -40,6 +40,35 @@ class StocksService {
         fileService.writeData(this.dataPath, stocks);
         return stocks.length !== initialLength;
     }
+
+    update(id, data) {
+        const stocks = fileService.readData(this.dataPath);
+        const index = stocks.findIndex(s => s.id === parseInt(id));
+
+        if (index !== -1) {
+            stocks[index] = { ...stocks[index], ...data };
+
+            fileService.writeData(this.dataPath, stocks);
+
+            return stocks[index];
+        }
+        return null;
+    }
+
+    deleteUnpopular() {
+        const stocks = fileService.readData(this.dataPath);
+        const initialCount = stocks.length;
+        const filteredStocks = stocks.filter(s => s.members >= 10);
+
+        if (filteredStocks.length !== initialCount) {
+            fileService.writeData(this.dataPath, filteredStocks);
+        }
+
+        return {
+            deleted: initialCount - filteredStocks.length,
+            remaining: filteredStocks.length
+        };
+}
 }
 
 module.exports = new StocksService();
