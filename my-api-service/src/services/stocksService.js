@@ -69,6 +69,23 @@ class StocksService {
             remaining: filteredStocks.length
         };
 }
+
+clone(id) {
+    const stocks = fileService.readData(this.dataPath);
+    const original = stocks.find(s => s.id == id);
+
+    if (!original) return null;
+
+    const newStock = {
+        ...original,
+        id: Date.now(),
+        title: `${original.title} (Копия)`
+    };
+
+    stocks.push(newStock);
+    fileService.writeData(this.dataPath, stocks);
+    return newStock;
+}
 }
 
 module.exports = new StocksService();
