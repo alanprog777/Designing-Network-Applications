@@ -59,11 +59,23 @@ const deleteLowMembers = (req, res) => {
     });
 };
 
+const cloneStock = (req, res) => {
+    const { id } = req.params;
+    const clonedStock = stocksService.clone(id);
+
+    if (clonedStock) {
+        res.status(201).json(clonedStock);
+    } else {
+        res.status(404).json({ message: 'Оригинал для клонирования не найден' });
+    }
+};
+
 module.exports = {
     getAllStocks,
     getStockById,
     createStock,
     deleteStock,
     updateStock,
-    deleteLowMembers
+    deleteLowMembers,
+    cloneStock
 };
