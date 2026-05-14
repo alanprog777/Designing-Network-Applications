@@ -1,16 +1,21 @@
+const readline = require('readline');
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+
 function merge(...objects) {
   return objects.reduce((acc, current) => {
     Object.keys(current).forEach(key => {
-      if (!(key in acc)) {
-        acc[key] = current[key];
-      }
+      if (!(key in acc)) acc[key] = current[key];
     });
     return acc;
   }, {});
 }
 
-const obj1 = { a: 1, b: 2 };
-const obj2 = { b: 3, c: 4 };
-const obj3 = { a: 5, d: 6 };
-
-console.log(merge(obj1, obj2, obj3));
+rl.question('Введите объекты через запятую (например: {"a":1}, {"b":2}): ', (answer) => {
+  try {
+    const objects = JSON.parse(`[${answer}]`);
+    console.log('Результат:', merge(...objects));
+  } catch (e) {
+    console.log('Ошибка! Вводи в формате JSON: {"a":1}, {"b":2}');
+  }
+  rl.close();
+});
