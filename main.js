@@ -1,34 +1,18 @@
-import { Header } from './components/header/index.js';
-import { Footer } from './components/footer/index.js';
 import { MainPage } from './pages/main/index.js';
 import { ProductPage } from './pages/product/index.js';
-import { SmsPage } from './pages/sms/index.js';
-import { CalcPage } from './pages/calc/index.js';
-import { AuthorPage } from './pages/author/index.js';
 
-const router = () => {
-    const app = document.getElementById('app');
-    const headerSlot = document.getElementById('header-slot');
-    const footerSlot = document.getElementById('footer-slot');
+const app = document.getElementById('app');
 
-    const hash = window.location.hash.split('?')[0] || '#main';
-
-    // Рендерим Header
-    headerSlot.innerHTML = '';
-    headerSlot.appendChild(Header(hash));
-
-    // Рендерим контент страницы
-    app.innerHTML = '';
-    if (hash === '#main') app.appendChild(MainPage());
-    else if (hash === '#product') app.appendChild(ProductPage());
-    else if (hash === '#sms') app.appendChild(SmsPage());
-    else if (hash === '#calc') app.appendChild(CalcPage());
-    else if (hash === '#author') app.appendChild(AuthorPage());
-
-    // Рендерим Footer
-    footerSlot.innerHTML = '';
-    footerSlot.appendChild(Footer());
+const renderPage = () => {
+    const hash = window.location.hash || '#main';
+    if (hash === '#main') {
+        MainPage(app);
+    } else if (hash.startsWith('#product')) {
+        const urlParams = new URLSearchParams(hash.split('?')[1]);
+        const id = urlParams.get('id');
+        ProductPage(app, id);
+    }
 };
 
-window.addEventListener('hashchange', router);
-window.addEventListener('load', router);
+window.onhashchange = renderPage;
+window.onload = renderPage;
