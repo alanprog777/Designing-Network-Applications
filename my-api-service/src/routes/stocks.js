@@ -8,5 +8,6 @@ router.post('/', stocksController.createStock);
 router.delete('/:id', stocksController.deleteStock);
 router.patch('/:id', stocksController.updateStock);
 router.delete('/cleanup/unpopular', stocksController.deleteLowMembers);
+router.post('/:id/clone', stocksController.cloneStock);
 
 module.exports = router;
