@@ -1,5 +1,3 @@
-import { initModelViewer } from '../../utils/model-viewer.js';
-
 export const ProductPage = () => {
     const params = new URLSearchParams(window.location.hash.split('?')[1]);
     const id = params.get('id');
@@ -31,10 +29,6 @@ export const ProductPage = () => {
         <hr class="product-divider">
         <button id="back-btn" class="btn-detail btn-full-width">Назад к списку чатов</button>
     `;
-
-    setTimeout(() => {
-        initModelViewer('model-container', 'model/Phone.glb');
-    }, 0);
 
     page.querySelector('#back-btn').onclick = () => {
         window.location.hash = '#main';
