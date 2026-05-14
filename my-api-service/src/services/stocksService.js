@@ -70,21 +70,21 @@ class StocksService {
         };
 }
 
-clone(id) {
-    const stocks = fileService.readData(this.dataPath);
-    const original = stocks.find(s => s.id == id);
+    clone(id) {
+        const stocks = fileService.readData(this.dataPath);
+        const original = stocks.find(s => s.id == id);
 
-    if (!original) return null;
+        if (!original) return null;
 
-    const newStock = {
-        ...original,
-        id: Date.now(),
-        title: `${original.title} (Копия)`
-    };
+        const newStock = {
+            ...original,
+            id: Date.now(),
+            title: `${original.title} (Копия)`
+        };
 
-    stocks.push(newStock);
-    fileService.writeData(this.dataPath, stocks);
-    return newStock;
+        stocks.push(newStock);
+        fileService.writeData(this.dataPath, stocks);
+        return newStock;
 }
 }
 
