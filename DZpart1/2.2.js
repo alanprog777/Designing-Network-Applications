@@ -27,8 +27,7 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-console.log("=== Программа сворачивания чисел в диапазоны ===");
-rl.question('Введите числа через пробел] ', (answer) => {
+rl.question('Введите числа через пробел: ', (answer) => {
 
   const inputNums = answer
     .trim()
