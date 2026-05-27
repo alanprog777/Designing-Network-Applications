@@ -5,11 +5,15 @@ import { stockUrls } from '../../modules/stockUrls.js';
 export const MainPage = (root) => {
     let currentData = [];
 
-    const getData = () => {
-        ajax.get(stockUrls.getStocks(), (data) => {
-            currentData = Array.isArray(data) ? data : [];
-            render();
-        });
+    const getData = async () => {
+        const data = await ajax.get(stockUrls.getStocks());
+        currentData = Array.isArray(data) ? data : [];
+        render();
+    };
+
+    const deleteItem = async (id) => {
+        await ajax.delete(stockUrls.removeStockById(id));
+        getData();
     };
 
     const render = () => {
@@ -43,12 +47,6 @@ export const MainPage = (root) => {
 
         input.oninput = () => render();
         root.querySelector('#add-btn').onclick = () => { window.location.hash = '#product-edit'; };
-    };
-
-    const deleteItem = (id) => {
-        ajax.delete(stockUrls.removeStockById(id), () => {
-            getData();
-        });
     };
 
     getData();

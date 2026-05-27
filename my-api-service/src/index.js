@@ -1,28 +1,17 @@
 const express = require('express');
 const path = require('path');
-const stocksRouter = require('./routes/stocks');
-const stocksService = require('./services/stocksService');
 
 const app = express();
 const PORT = 3000;
 
-const DATA_FILE_PATH = path.join(__dirname, 'data', 'stocks.json');
-
-stocksService.init(DATA_FILE_PATH);
-
 app.use(express.json());
 
-app.use((req, res, next) => {
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-    next();
-});
+app.use(express.static(path.join(__dirname, '../public')));
 
-app.use('/stocks', stocksRouter);
-
-app.use((req, res) => {
-    res.status(404).json({ error: 'Маршрут не найден' });
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 Сервер летит на http://localhost:${PORT}`);
+    console.log(`✅ Сервер запущен! Открывай: http://localhost:${PORT}`);
 });
