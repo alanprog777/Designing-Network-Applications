@@ -21,10 +21,6 @@ export const ProductEditPage = (root, id) => {
                 <input type="number" id="input-members" class="search-input form-input" placeholder="0">
             </div>
 
-            <p class="edit-notice">
-                * Кнопка "Сохранить" появится в Лабораторной работе №6
-            </p>
-
             <hr>
             <button id="back-btn" class="btn-detail btn-full-width">Назад к списку чатов</button>
         </div>
