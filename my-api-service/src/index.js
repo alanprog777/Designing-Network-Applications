@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const stocksRouter = require('./routes/stocks');
-const stocksService = require('./services/stocksService'); // Подключаем сервис
+const stocksService = require('./services/stocksService'); 
 
 const app = express();
 

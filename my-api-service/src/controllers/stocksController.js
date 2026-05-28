@@ -43,7 +43,6 @@ const updateStock = (req, res) => {
 };
 
 const updateChat = (req, res) => {
-    // ИСПРАВЛЕНО: Правильное название метода в сервисе - deleteUnpopular
     const result = stocksService.deleteUnpopular();
 
     if (result.success) {
@@ -79,5 +78,5 @@ module.exports = {
     updateStock,
     deleteLowMembers,
     cloneStock,
-    updateChat 
+    updateChat
 };

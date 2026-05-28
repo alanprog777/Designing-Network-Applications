@@ -25,7 +25,6 @@ class Ajax {
         }
     }
 
-    // ДОБАВЛЕН НОВЫЙ МЕТОД ДЛЯ ОБНОВЛЕНИЯ (РЕДАКТИРОВАНИЯ)
     async patch(url, data) {
         try {
             const response = await fetch(url, {

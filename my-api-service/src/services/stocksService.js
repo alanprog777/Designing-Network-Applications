@@ -17,14 +17,12 @@ class StocksService {
         return stocks.find(s => s.id === parseInt(id));
     }
 
-    // ДОБАВЛЕН ИСПРАВЛЕННЫЙ МЕТОД ОБНОВЛЕНИЯ ХАРАКТЕРИСТИК
     update(id, updatedData) {
         const stocks = fileService.readData(this.dataPath);
         const index = stocks.findIndex(s => s.id === parseInt(id));
 
-        if (index === -1) return null; // Если карточка не найдена
+        if (index === -1) return null;
 
-        // Обновляем все характеристики карточки, но строго сохраняем её старый ID
         stocks[index] = {
             ...stocks[index],
             ...updatedData,
