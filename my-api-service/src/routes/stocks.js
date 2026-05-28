@@ -10,4 +10,4 @@ router.patch('/:id', stocksController.updateStock);
 router.delete('/cleanup/unpopular', stocksController.deleteLowMembers);
 router.post('/:id/clone', stocksController.cloneStock);
 
-module.exports = router;
+module.exports = router; 

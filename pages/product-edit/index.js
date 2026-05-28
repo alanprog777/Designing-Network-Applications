@@ -1,7 +1,7 @@
 import { ajax } from '../../modules/ajax.js';
 import { stockUrls } from '../../modules/stockUrls.js';
 
-export const ProductEditPage = (root, id) => {
+export const ProductEditPage = async (root, id) => {
     root.innerHTML = `
         <div class="product-details-card edit-card-container">
             <h2 class="product-title" id="page-title">${id ? 'Редактирование услуги' : 'Добавление новой услуги'}</h2>
@@ -22,7 +22,10 @@ export const ProductEditPage = (root, id) => {
             </div>
 
             <hr>
-            <button id="back-btn" class="btn-detail btn-full-width">Назад к списку чатов</button>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button id="save-btn" class="btn-edit btn-full-width">Сохранить</button>
+                <button id="back-btn" class="btn-detail btn-full-width">Назад к списку чатов</button>
+            </div>
         </div>
     `;
 
@@ -31,15 +34,30 @@ export const ProductEditPage = (root, id) => {
     const membersInput = root.querySelector('#input-members');
 
     if (id) {
-        ajax.get(stockUrls.getStockById(id), (product) => {
-            if (product) {
-                titleInput.value = product.title || '';
-                textInput.value = product.text || '';
-                membersInput.value = product.members || 0;
-                root.querySelector('#page-title').innerText = `Редактирование услуги #${id}`;
-            }
-        });
+        const product = await ajax.get(stockUrls.getStockById(id));
+        if (product) {
+            titleInput.value = product.title || '';
+            textInput.value = product.text || '';
+            membersInput.value = product.members || 0;
+            root.querySelector('#page-title').innerText = `Редактирование услуги #${id}`;
+        }
     }
+
+    root.querySelector('#save-btn').onclick = async () => {
+        const dataToSave = {
+            title: titleInput.value,
+            text: textInput.value,
+            members: parseInt(membersInput.value) || 0
+        };
+
+        if (id) {
+            await ajax.patch(stockUrls.updateStockById(id), dataToSave);
+        } else {
+            await ajax.post(stockUrls.createStock(), dataToSave);
+        }
+
+        window.location.hash = '#main';
+    };
 
     root.querySelector('#back-btn').onclick = () => { window.location.hash = '#main'; };
 };

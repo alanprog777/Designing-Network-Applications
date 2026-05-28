@@ -1,8 +1,10 @@
+import './css/main.css'; 
+
 import { Header } from './components/header/index.js';
 import { Footer } from './components/footer/index.js';
 import { MainPage } from './pages/main/index.js';
 import { ProductPage } from './pages/product/index.js';
-import { ProductEditPage } from './pages/product-edit/index.js'; // Добавили страницу формы
+import { ProductEditPage } from './pages/product-edit/index.js';
 import { SmsPage } from './pages/sms/index.js';
 import { CalcPage } from './pages/calc/index.js';
 import { AuthorPage } from './pages/author/index.js';

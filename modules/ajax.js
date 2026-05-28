@@ -25,6 +25,22 @@ class Ajax {
         }
     }
 
+    // ДОБАВЛЕН НОВЫЙ МЕТОД ДЛЯ ОБНОВЛЕНИЯ (РЕДАКТИРОВАНИЯ)
+    async patch(url, data) {
+        try {
+            const response = await fetch(url, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
+            return await response.json();
+        } catch (error) {
+            console.error('Ошибка PATCH:', error);
+            return null;
+        }
+    }
+
     async delete(url) {
         try {
             const response = await fetch(url, { method: 'DELETE' });
