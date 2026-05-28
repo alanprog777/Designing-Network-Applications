@@ -22,7 +22,10 @@ export const ProductEditPage = (root, id) => {
             </div>
 
             <hr>
-            <button id="back-btn" class="btn-detail btn-full-width">Назад к списку чатов</button>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button id="save-btn" class="btn-edit btn-full-width">Сохранить</button>
+                <button id="back-btn" class="btn-detail btn-full-width">Назад к списку чатов</button>
+            </div>
         </div>
     `;
 
@@ -30,16 +33,36 @@ export const ProductEditPage = (root, id) => {
     const textInput = root.querySelector('#input-text');
     const membersInput = root.querySelector('#input-members');
 
+    // 1. Загрузка данных (если есть ID)
     if (id) {
         ajax.get(stockUrls.getStockById(id), (product) => {
             if (product) {
                 titleInput.value = product.title || '';
                 textInput.value = product.text || '';
                 membersInput.value = product.members || 0;
-                root.querySelector('#page-title').innerText = `Редактирование услуги #${id}`;
             }
         });
     }
+
+    // 2. Логика сохранения
+    root.querySelector('#save-btn').onclick = () => {
+        const dataToSave = {
+            title: titleInput.value,
+            text: textInput.value,
+            members: parseInt(membersInput.value) || 0
+        };
+
+        // Используем колбэк вместо await
+        const onComplete = () => {
+            window.location.hash = '#main'; // Это вернет тебя на главную, которая вызовет getData()
+        };
+
+        if (id) {
+            ajax.patch(stockUrls.updateStockById(id), dataToSave, onComplete);
+        } else {
+            ajax.post(stockUrls.createStock(), dataToSave, onComplete);
+        }
+    };
 
     root.querySelector('#back-btn').onclick = () => { window.location.hash = '#main'; };
 };

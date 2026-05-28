@@ -68,6 +68,12 @@ const cloneStock = (req, res) => {
     } else {
         res.status(404).json({ message: 'Оригинал для клонирования не найден' });
     }
+
+const createStock = (req, res) => {
+    const newStock = stocksService.create(req.body);
+    res.status(201).json(newStock);
+};
+
 };
 
 module.exports = {
@@ -77,5 +83,6 @@ module.exports = {
     deleteStock,
     updateStock,
     deleteLowMembers,
-    cloneStock
+    cloneStock,
+    createStock
 };
