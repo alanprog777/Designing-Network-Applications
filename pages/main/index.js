@@ -5,17 +5,19 @@ import { stockUrls } from '../../modules/stockUrls.js';
 export const MainPage = (root) => {
     let currentData = [];
 
-    const getData = async () => {
-        const data = await ajax.get(stockUrls.getStocks());
-        currentData = Array.isArray(data) ? data : [];
-        render();
+    const getData = () => {
+        ajax.get(stockUrls.getStocks(), (data) => {
+            currentData = Array.isArray(data) ? data : [];
+            render();
+        });
     };
 
-    const deleteItem = async (id) => {
-        const result = await ajax.delete(stockUrls.removeStockById(id));
-        if (result !== null) {
-            getData();
-        }
+    const deleteItem = (id) => {
+        ajax.delete(stockUrls.removeStockById(id), (result) => {
+            if (result !== null) {
+                getData(); // Перерисовываем список только после успешного удаления
+            }
+        });
     };
 
     const render = () => {
@@ -57,5 +59,6 @@ export const MainPage = (root) => {
         }
     };
 
+    // Запускаем первую загрузку данных
     getData();
 };

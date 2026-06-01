@@ -1,7 +1,7 @@
 import { ajax } from '../../modules/ajax.js';
 import { stockUrls } from '../../modules/stockUrls.js';
 
-export const ProductEditPage = async (root, id) => {
+export const ProductEditPage = (root, id) => {
     root.innerHTML = `
         <div class="product-details-card edit-card-container">
             <h2 class="product-title" id="page-title">${id ? 'Редактирование услуги' : 'Добавление новой услуги'}</h2>
@@ -33,38 +33,39 @@ export const ProductEditPage = async (root, id) => {
     const textInput = root.querySelector('#input-text');
     const membersInput = root.querySelector('#input-members');
 
-    // Загрузка данных при редактировании
+    // Загрузка данных для редактирования
     if (id) {
-        const product = await ajax.get(stockUrls.getStockById(id));
-        if (product) {
-            titleInput.value = product.title || '';
-            textInput.value = product.text || '';
-            membersInput.value = product.members || 0;
-            root.querySelector('#page-title').innerText = `Редактирование услуги #${id}`;
-        }
+        ajax.get(stockUrls.getStockById(id), (product) => {
+            if (product) {
+                titleInput.value = product.title || '';
+                textInput.value = product.text || '';
+                membersInput.value = product.members || 0;
+                root.querySelector('#page-title').innerText = `Редактирование услуги #${id}`;
+            }
+        });
     }
 
     // Сохранение данных
-    root.querySelector('#save-btn').onclick = async () => {
+    root.querySelector('#save-btn').onclick = () => {
         const dataToSave = {
             title: titleInput.value,
             text: textInput.value,
             members: parseInt(membersInput.value) || 0
         };
 
-        let result = null;
+        // Колбэк-функция, которая сработает после ответа сервера
+        const handleResponse = (result) => {
+            if (result) {
+                window.location.hash = '#main'; // Переходим только при успехе
+            } else {
+                console.error("Не удалось сохранить. Проверь CORS или работу сервера.");
+            }
+        };
 
         if (id) {
-            result = await ajax.patch(stockUrls.updateStockById(id), dataToSave);
+            ajax.patch(stockUrls.updateStockById(id), dataToSave, handleResponse);
         } else {
-            result = await ajax.post(stockUrls.createStock(), dataToSave);
-        }
-
-        // РЕДИРЕКТ СРАБОТАЕТ ТОЛЬКО ЕСЛИ СЕРВЕР ОТВЕТИЛ (ПРИ ВКЛЮЧЕННОМ CORS)
-        if (result) {
-            window.location.hash = '#main';
-        } else {
-            console.error("Не удалось сохранить карточку. Проверь работу сервера или включи CORS в браузере.");
+            ajax.post(stockUrls.createStock(), dataToSave, handleResponse);
         }
     };
 
