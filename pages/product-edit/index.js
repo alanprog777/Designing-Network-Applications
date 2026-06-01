@@ -33,7 +33,6 @@ export const ProductEditPage = (root, id) => {
     const textInput = root.querySelector('#input-text');
     const membersInput = root.querySelector('#input-members');
 
-    // Загрузка данных для редактирования (GET)
     if (id) {
         ajax.get(stockUrls.getStockById(id), (product) => {
             if (product) {
@@ -45,7 +44,6 @@ export const ProductEditPage = (root, id) => {
         });
     }
 
-    // Обработчик кнопки Сохранить
     root.querySelector('#save-btn').onclick = () => {
         const dataToSave = {
             title: titleInput.value,
@@ -53,7 +51,6 @@ export const ProductEditPage = (root, id) => {
             members: parseInt(membersInput.value) || 0
         };
 
-        // Точно как в Lab 6: редирект происходит сразу по завершении запроса
         const onComplete = () => {
             window.location.hash = '#main';
         };
