@@ -32,6 +32,12 @@ class StocksService {
         fileService.writeData(this.dataPath, stocks);
         return newStock;
     }
+
+    deleteUnpopular = () => {
+    stocks = stocks.filter(stock => stock.members >= 10);
+
+    return { success: true };
+};
 }
 
 module.exports = new StocksService();
