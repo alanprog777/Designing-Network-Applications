@@ -1,8 +1,7 @@
 class Ajax {
-    // Вспомогательный метод для отправки XHR-запросов
     _sendRequest(method, url, data, callback) {
         const xhr = new XMLHttpRequest();
-        xhr.open(method, url);
+        xhr.open(method, url, true);
 
         if (data) {
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -10,7 +9,7 @@ class Ajax {
 
         xhr.onload = () => {
             if (xhr.status >= 200 && xhr.status < 300) {
-                let parsedData = true; // Запасной вариант для 204 No Content
+                let parsedData = null;
                 if (xhr.responseText) {
                     try {
                         parsedData = JSON.parse(xhr.responseText);
@@ -26,11 +25,10 @@ class Ajax {
         };
 
         xhr.onerror = () => {
-            console.error('Ошибка сети (проверьте работу сервера и CORS)');
-            if (callback) callback(null);
+            console.error('Ошибка сети / Блокировка CORS');
+            if (callback) callback(null); // Вызываем колбэк даже при ошибке CORS
         };
 
-        // Отправляем данные, если они есть
         xhr.send(data ? JSON.stringify(data) : null);
     }
 

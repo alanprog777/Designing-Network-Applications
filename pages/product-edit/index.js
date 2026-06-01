@@ -33,7 +33,7 @@ export const ProductEditPage = (root, id) => {
     const textInput = root.querySelector('#input-text');
     const membersInput = root.querySelector('#input-members');
 
-    // Загрузка данных для редактирования
+    // Загрузка данных для редактирования (GET)
     if (id) {
         ajax.get(stockUrls.getStockById(id), (product) => {
             if (product) {
@@ -45,7 +45,7 @@ export const ProductEditPage = (root, id) => {
         });
     }
 
-    // Сохранение данных
+    // Обработчик кнопки Сохранить
     root.querySelector('#save-btn').onclick = () => {
         const dataToSave = {
             title: titleInput.value,
@@ -53,19 +53,15 @@ export const ProductEditPage = (root, id) => {
             members: parseInt(membersInput.value) || 0
         };
 
-        // Колбэк-функция, которая сработает после ответа сервера
-        const handleResponse = (result) => {
-            if (result) {
-                window.location.hash = '#main'; // Переходим только при успехе
-            } else {
-                console.error("Не удалось сохранить. Проверь CORS или работу сервера.");
-            }
+        // Точно как в Lab 6: редирект происходит сразу по завершении запроса
+        const onComplete = () => {
+            window.location.hash = '#main';
         };
 
         if (id) {
-            ajax.patch(stockUrls.updateStockById(id), dataToSave, handleResponse);
+            ajax.patch(stockUrls.updateStockById(id), dataToSave, onComplete);
         } else {
-            ajax.post(stockUrls.createStock(), dataToSave, handleResponse);
+            ajax.post(stockUrls.createStock(), dataToSave, onComplete);
         }
     };
 

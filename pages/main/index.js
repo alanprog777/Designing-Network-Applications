@@ -13,10 +13,8 @@ export const MainPage = (root) => {
     };
 
     const deleteItem = (id) => {
-        ajax.delete(stockUrls.removeStockById(id), (result) => {
-            if (result !== null) {
-                getData(); // Перерисовываем список только после успешного удаления
-            }
+        ajax.delete(stockUrls.removeStockById(id), () => {
+            getData(); // Перезапрашиваем данные после удаления
         });
     };
 
@@ -59,6 +57,5 @@ export const MainPage = (root) => {
         }
     };
 
-    // Запускаем первую загрузку данных
     getData();
 };
