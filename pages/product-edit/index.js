@@ -1,7 +1,7 @@
 import { ajax } from '../../modules/ajax.js';
 import { stockUrls } from '../../modules/stockUrls.js';
 
-export const ProductEditPage = (root, id) => {
+export const ProductEditPage = async (root, id) => {
     root.innerHTML = `
         <div class="product-details-card edit-card-container">
             <h2 class="product-title" id="page-title">${id ? 'Редактирование услуги' : 'Добавление новой услуги'}</h2>
@@ -33,33 +33,38 @@ export const ProductEditPage = (root, id) => {
     const textInput = root.querySelector('#input-text');
     const membersInput = root.querySelector('#input-members');
 
-    // Загрузка данных для редактирования
+    // Загрузка данных при редактировании
     if (id) {
-        ajax.get(stockUrls.getStockById(id), (product) => {
-            if (product) {
-                titleInput.value = product.title || '';
-                textInput.value = product.text || '';
-                membersInput.value = product.members || 0;
-            }
-        });
+        const product = await ajax.get(stockUrls.getStockById(id));
+        if (product) {
+            titleInput.value = product.title || '';
+            textInput.value = product.text || '';
+            membersInput.value = product.members || 0;
+            root.querySelector('#page-title').innerText = `Редактирование услуги #${id}`;
+        }
     }
 
-    // Обработчик кнопки Сохранить
-    root.querySelector('#save-btn').onclick = () => {
+    // Сохранение данных
+    root.querySelector('#save-btn').onclick = async () => {
         const dataToSave = {
             title: titleInput.value,
             text: textInput.value,
             members: parseInt(membersInput.value) || 0
         };
 
-        const onComplete = (response) => {
-            window.location.hash = '#main';
-        };
+        let result = null;
 
         if (id) {
-            ajax.patch(stockUrls.updateStockById(id), dataToSave, onComplete);
+            result = await ajax.patch(stockUrls.updateStockById(id), dataToSave);
         } else {
-            ajax.post(stockUrls.createStock(), dataToSave, onComplete);
+            result = await ajax.post(stockUrls.createStock(), dataToSave);
+        }
+
+        // РЕДИРЕКТ СРАБОТАЕТ ТОЛЬКО ЕСЛИ СЕРВЕР ОТВЕТИЛ (ПРИ ВКЛЮЧЕННОМ CORS)
+        if (result) {
+            window.location.hash = '#main';
+        } else {
+            console.error("Не удалось сохранить карточку. Проверь работу сервера или включи CORS в браузере.");
         }
     };
 

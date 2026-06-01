@@ -5,11 +5,17 @@ import { stockUrls } from '../../modules/stockUrls.js';
 export const MainPage = (root) => {
     let currentData = [];
 
-    const getData = () => {
-        ajax.get(stockUrls.getStocks(), (data) => {
-            currentData = Array.isArray(data) ? data : [];
-            render();
-        });
+    const getData = async () => {
+        const data = await ajax.get(stockUrls.getStocks());
+        currentData = Array.isArray(data) ? data : [];
+        render();
+    };
+
+    const deleteItem = async (id) => {
+        const result = await ajax.delete(stockUrls.removeStockById(id));
+        if (result !== null) {
+            getData();
+        }
     };
 
     const render = () => {
@@ -29,8 +35,12 @@ export const MainPage = (root) => {
 
         const grid = root.querySelector('#grid');
         const input = root.querySelector('#filter');
-        input.value = filterVal;
-        input.focus();
+
+        if (input) {
+            input.value = filterVal;
+            input.focus();
+            input.oninput = () => render();
+        }
 
         currentData
             .filter(item => {
@@ -41,14 +51,10 @@ export const MainPage = (root) => {
                 grid.appendChild(ProductCard(item, deleteItem));
             });
 
-        input.oninput = () => render();
-        root.querySelector('#add-btn').onclick = () => { window.location.hash = '#product-edit'; };
-    };
-
-    const deleteItem = (id) => {
-        ajax.delete(stockUrls.removeStockById(id), () => {
-            getData();
-        });
+        const addBtn = root.querySelector('#add-btn');
+        if (addBtn) {
+            addBtn.onclick = () => { window.location.hash = '#product-edit'; };
+        }
     };
 
     getData();
