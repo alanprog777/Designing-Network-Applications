@@ -33,7 +33,7 @@ export const ProductEditPage = (root, id) => {
     const textInput = root.querySelector('#input-text');
     const membersInput = root.querySelector('#input-members');
 
-    // 1. Загрузка данных (если есть ID)
+    // Загрузка данных для редактирования
     if (id) {
         ajax.get(stockUrls.getStockById(id), (product) => {
             if (product) {
@@ -44,7 +44,7 @@ export const ProductEditPage = (root, id) => {
         });
     }
 
-    // 2. Логика сохранения
+    // Обработчик кнопки Сохранить
     root.querySelector('#save-btn').onclick = () => {
         const dataToSave = {
             title: titleInput.value,
@@ -52,9 +52,8 @@ export const ProductEditPage = (root, id) => {
             members: parseInt(membersInput.value) || 0
         };
 
-        // Используем колбэк вместо await
-        const onComplete = () => {
-            window.location.hash = '#main'; // Это вернет тебя на главную, которая вызовет getData()
+        const onComplete = (response) => {
+            window.location.hash = '#main';
         };
 
         if (id) {

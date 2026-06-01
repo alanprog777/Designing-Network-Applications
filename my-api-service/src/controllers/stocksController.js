@@ -32,23 +32,12 @@ const deleteStock = (req, res) => {
 const updateStock = (req, res) => {
     const { id } = req.params;
     const updatedData = req.body;
-
     const result = stocksService.update(id, updatedData);
 
     if (result) {
         res.json(result);
     } else {
         res.status(404).json({ message: 'Запись с таким ID не найдена' });
-    }
-};
-
-const updateChat = (req, res) => {
-    const result = stocksService.deleteUnpopularStocks();
-
-    if (result.success) {
-        res.json({ message: `Карточки удалены` });
-    } else {
-        res.json({ message: "Карточек с количеством участников меньше 10 не найдено" });
     }
 };
 
@@ -68,12 +57,6 @@ const cloneStock = (req, res) => {
     } else {
         res.status(404).json({ message: 'Оригинал для клонирования не найден' });
     }
-
-const createStock = (req, res) => {
-    const newStock = stocksService.create(req.body);
-    res.status(201).json(newStock);
-};
-
 };
 
 module.exports = {
@@ -83,6 +66,5 @@ module.exports = {
     deleteStock,
     updateStock,
     deleteLowMembers,
-    cloneStock,
-    createStock
+    cloneStock
 };
